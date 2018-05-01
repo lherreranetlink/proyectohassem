@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/make_connection', 'OperacionController@make_connection');
+Route::get('/make_connection', 'OperacionController@make_connection');
