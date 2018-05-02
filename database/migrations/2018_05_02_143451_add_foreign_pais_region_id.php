@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddForeignKeyUserIdAgain extends Migration
+class AddForeignPaisRegionId extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddForeignKeyUserIdAgain extends Migration
      */
     public function up()
     {
-        Schema::table('conexions', function (Blueprint $table) {
-            $table->integer('user_id')->references('id')->on('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('pais_region_id')->references('id')->on('users')->change();
         });
     }
 
@@ -25,6 +25,7 @@ class AddForeignKeyUserIdAgain extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+        });
     }
 }
