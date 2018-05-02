@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/make_connection', 'OperacionController@make_connection');
+Route::get('/try_login', 'OperacionController@try_login');

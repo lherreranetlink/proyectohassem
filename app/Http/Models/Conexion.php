@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Conexion extends Model
 {
+
   protected $fillable = [
       'nick_name',
       'password',
@@ -13,6 +14,5 @@ class Conexion extends Model
       'fecha_hora',
       'fue_exitosa',
   ];
-
 
 }
