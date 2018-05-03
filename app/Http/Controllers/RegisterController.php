@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Storage;
+use League\Flysystem\Filesystem;
 use Illuminate\Http\Request;
 use App\User;
 use App\Models\PaisRegion;
@@ -16,6 +18,7 @@ class RegisterController extends Controller
         $user->password = bcrypt($request->password);
         $user->email = $request->correo;
         $user->pais_region_id = $paisRegionId;
+        Storage::disk('local')->put('fotos_perfil/foto_perfil.jpg', base64_decode($request->foto_perfil));
 
         return ($user->save()) ? response()->json(['status' => 'Success'])
                                : response()->json([
