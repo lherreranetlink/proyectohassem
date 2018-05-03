@@ -12,4 +12,10 @@ class PaisRegion extends Model
         'region_id',
     ];
 
+    public static function get_pais_region_id_by_country_name($country) {
+        return PaisRegion::where('pais_region.pais', '=', $country)->select('pais_region.id')
+                                                                   ->first()
+                                                                   ->id;
+    }
+
 }

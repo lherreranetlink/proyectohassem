@@ -21,6 +21,7 @@ class User extends Authenticatable
         'foto_perfil_ruta',
         'nick_name',
         'fecha_nac',
+        'pais_region_id',
     ];
 
     /**

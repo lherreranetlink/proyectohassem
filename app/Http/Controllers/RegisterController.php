@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Models\PaisRegion;
 
 class RegisterController extends Controller
 {
     public function register(Request $request) {
-        $nombre = $request->nombre;
-        $nickName = $request->nick_name;
-        $password = $request->password;
-        $correo = $request->correo;
-        $edad = $request->edad;
-        $region = $request->pais;
-        //$fotoPerfil = $request->foto_perfil;
+        $paisRegionId = PaisRegion::get_pais_region_id_by_country_name($request->pais);
+        $user = new User;
+        $user->name = $request->nombre;
+        $user->nick_name = $request->nick_name;
+        $user->password = bcrypt($request->password);
+        $user->email = $request->correo;
+        $user->pais_region_id = $paisRegionId;
+
+        return ($user->save()) ? response()->json(['status' => 'Success'])
+                               : response()->json([
+                                 'status' => 'Error',
+                                 'message' => 'Error registrando usuario',
+                               ]);
     }
 }
