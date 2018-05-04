@@ -15,12 +15,15 @@ class RegisterController extends Controller
         $user = new User;
         $user->name = $request->nombre;
         $user->nick_name = $request->nick_name;
-        $user->password = bcrypt($request->password);
+        $user->password = /*bcrypt(*/$request->password/*)*/;
         $user->email = $request->correo;
         $user->pais_region_id = $paisRegionId;
-        Storage::disk('local')->put('fotos_perfil/foto_perfil.jpg', base64_decode($request->foto_perfil));
+        $guardado = $user->save();
 
-        return ($user->save()) ? response()->json(['status' => 'Success'])
+        if ($guardado)
+            Storage::disk('local')->put("fotos_perfil/". $user->id.".jpg", base64_decode($request->foto_perfil));
+
+        return ($guardado) ? response()->json(['status' => 'Success'])
                                : response()->json([
                                  'status' => 'Error',
                                  'message' => 'Error registrando usuario',
