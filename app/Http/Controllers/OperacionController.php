@@ -16,7 +16,9 @@ class OperacionController extends Controller
         $conection = $this->registerConection($request);
 
         $userId = User::where('nick_name', '=', $request->nick_name)->where('password', '=', $request->password)
-                                                                    ->first();
+                                                                    ->select('users.id')
+                                                                    ->first()->id;
+
         if (!$userId) {
             $conection->fue_exitosa = 0;
             $conection->save();
@@ -39,6 +41,7 @@ class OperacionController extends Controller
                                     'status' => 'Success',
                                     'ip_address' => $regionInfo->ip_address,
                                     'http_port' => $regionInfo->http_port,
+                                    'user_id' => $userId,
                                 ]);
     }
 
