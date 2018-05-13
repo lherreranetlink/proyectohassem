@@ -14,7 +14,7 @@ class AddForeignKeyUserIdAgain extends Migration
     public function up()
     {
         Schema::table('conexions', function (Blueprint $table) {
-            $table->integer('user_id')->references('id')->on('users');
+            $table->integer('user_id')->references('id')->on('users')->change();
         });
     }
 
