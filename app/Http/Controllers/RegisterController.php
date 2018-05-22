@@ -20,8 +20,12 @@ class RegisterController extends Controller
         $user->pais_region_id = $paisRegionId;
         $guardado = $user->save();
 
-        if ($guardado)
-            Storage::disk('local')->put("fotos_perfil/". $user->id.".jpg", base64_decode($request->foto_perfil));
+        if ($guardado){
+            $storagePath = "fotos_perfil/". $user->id.".jpg";
+            Storage::disk('local')->put($storagePath, base64_decode($request->foto_perfil));
+            $user->foto_perfil_ruta = $storagePath;
+            $user->save();
+        }
 
         return ($guardado) ? response()->json(['status' => 'Success'])
                                : response()->json([

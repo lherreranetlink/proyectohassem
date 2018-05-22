@@ -9,17 +9,17 @@ use App\Models\PaisRegion;
 use App\Models\Region;
 use App\User;
 use Carbon\Carbon;
+use Storage;
 
 class OperacionController extends Controller
 {
     public function try_login(Request $request) {
         $conection = $this->registerConection($request);
 
-        $userId = User::where('nick_name', '=', $request->nick_name)->where('password', '=', $request->password)
-                                                                    ->select('users.id')
-                                                                    ->first()->id;
+        $user = User::where('nick_name', '=', $request->nick_name)->where('password', '=', $request->password)
+                                                                    ->select('users.*')->first();
 
-        if (!$userId) {
+        if (!$user) {
             $conection->fue_exitosa = 0;
             $conection->save();
 
@@ -37,12 +37,23 @@ class OperacionController extends Controller
                                               ->select('ip_address', 'http_port')
                                               ->get()
                                               ->first();
-        return response()->json([
-                                    'status' => 'Success',
-                                    'ip_address' => $regionInfo->ip_address,
-                                    'http_port' => $regionInfo->http_port,
-                                    'user_id' => $userId,
-                                ]);
+
+        $data = ($request->movil_app) ? [
+                                            'status' => 'Success',
+                                            'ip_address' => $regionInfo->ip_address,
+                                            'http_port' => $regionInfo->http_port,
+                                            'user_id' => $user->id,
+                                            'user_profile_photo' => base64_encode(Storage::disk('local')->get($user->foto_perfil_ruta)),
+                                            'user_stack_name' => $user->name,
+                                        ] 
+                                      : [
+                                            'status' => 'Success',
+                                            'ip_address' => $regionInfo->ip_address,
+                                            'http_port' => $regionInfo->http_port,
+                                            'user_id' => $user->id,
+                                        ];
+
+        return response()->json($data);
     }
 
     private function registerConection(Request $request){

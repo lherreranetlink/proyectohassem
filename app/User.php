@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Storage;
 
 class User extends Authenticatable
 {
@@ -38,15 +39,38 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Fan', 'id_usuario_seguido');
     }
 
+    public function idolos()
+    {
+        return $this->hasMany('App\Models\Fan', 'user_id');
+    }
+
     public function get_fans()
     {
-        $fansInstances = array();
+        $fansInstances = [];
         $fans = $this->fans;
 
-        foreach ($fans as $fan)
-          $fansInstances[] = User::find($fan->user_id);
+        foreach ($fans as $fan)  {
+          $userInstance = User::find($fan->user_id);
+          $userInstance->foto_perfil_base64 = base64_encode(Storage::disk('local')->get($userInstance->foto_perfil_ruta));
+          $fansInstances[] = $userInstance;
+        }
 
         return $fansInstances;
+
+    }
+
+    public function get_idolos()
+    {
+        $idolosInstances = [];
+        $idolos = $this->idolos;
+
+        foreach($idolos as $idolo) {
+            $userInstance = User::find($idolo->id_usuario_seguido);
+            $userInstance->foto_perfil_base64 = base64_encode(Storage::disk('local')->get($userInstance->foto_perfil_ruta));
+            $idolosInstances[] = $userInstance;
+        }
+
+        return $idolosInstances;
 
     }
 

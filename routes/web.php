@@ -19,3 +19,8 @@ Route::get('/', function () {
 
 Route::get('/try_login', 'OperacionController@try_login');
 Route::post('/register', 'RegisterController@register');
+Route::get('/get_users_per_region', 'UsersController@get_users_per_regions');
+Route::post('/follow_user', 'UsersController@follow_user');
+Route::get('/get_followers', 'FansController@get_followers');
+Route::get('/get_idolos',  'FansController@get_idolos');
+Route::post('/quit_follow', 'UsersController@remove_follow');

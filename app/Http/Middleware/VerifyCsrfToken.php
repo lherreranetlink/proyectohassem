@@ -13,5 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         '/register',
+        '/follow_user',
+        '/quit_follow',
     ];
 }
